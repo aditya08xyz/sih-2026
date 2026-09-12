@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jal Shuddhi — Smart Water Purification & Quality Monitoring</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 11 5 15.5C5 19.6 8.13 22 12 22C15.87 22 19 19.6 19 15.5C19 11 12 2 12 2Z" fill="#04222a"/></svg>
+      </span>
+      <div>
+        <h1>Jal Shuddhi <span class="sub">Smart Water Purification &amp; Quality Monitoring — Rural &amp; Mining-Affected Areas</span></h1>
+      </div>
+    </div>
+    <div class="status-pill unsafe" id="overallStatus">RAW WATER · UNSAFE</div>
+  </header>
+
+  <main class="layout">
+
+    <!-- LEFT RAIL: inputs + controls -->
+    <div class="rail rail-left">
+      <section class="panel">
+        <h2 class="panel-title">Raw water source</h2>
+        <p class="panel-sub">Adjust readings to match a site's borewell or mining-runoff sample.</p>
+        <div class="sliders" id="sliders"></div>
+      </section>
+
+      <section class="panel controls">
+        <div class="progress-wrap">
+          <div class="progress-label"><span id="stageLabel">Idle</span><span id="progressPct">0%</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="startBtn">Start purification</button>
+          <button class="btn btn-ghost" id="resetBtn">Reset</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- CENTER: machine -->
+    <section class="stage-center">
+      <div class="machine-toolbar">
+        <div class="hint" id="stageHint">Tap any tank or unit below for details</div>
+        <div class="zoom-controls">
+          <button id="zoomOut" title="Zoom out">–</button>
+          <button id="zoomReset" title="Reset zoom">100%</button>
+          <button id="zoomIn" title="Zoom in">+</button>
+        </div>
+      </div>
+
+      <div class="machine-viewport" id="machineViewport">
+        <div class="machine-scale" id="machineScale">
+
+          <div class="tank" data-stage="raw" tabindex="0">
+            <div class="tank-body"><div class="tank-fill" id="fillRaw"></div><span class="tank-level" id="levelRaw">—</span></div>
+            <div class="tank-label">Raw Water<br>Inlet Tank</div>
+          </div>
+
+          <div class="pipe" id="pipeA"><div class="pipe-fluid" style="--fc1:#5a3a22;--fc2:#3a2413;"></div></div>
+
+          <div class="unit-box" data-stage="sediment" tabindex="0">
+            <div class="unit-shell">
+              <svg class="unit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+                <circle cx="7" cy="9.5" r="1" fill="currentColor" stroke="none"/><circle cx="14" cy="9.5" r="1" fill="currentColor" stroke="none"/>
+                <circle cx="10" cy="14.5" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="14.5" r="1" fill="currentColor" stroke="none"/>
+              </svg>
+              <span class="unit-led"></span>
+            </div>
+            <span class="unit-tag">STAGE 01</span>
+            <span class="unit-name">Sediment Filter</span>
+          </div>
+
+          <div class="pipe" id="pipeB"><div class="pipe-fluid" style="--fc1:#8a763f;--fc2:#5c4d29;"></div></div>
+
+          <div class="unit-box" data-stage="carbon" tabindex="0">
+            <div class="unit-shell">
+              <svg class="unit-icon" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="6" cy="6" r="1.6"/><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="6" r="1.6"/>
+                <circle cx="9" cy="11" r="1.6"/><circle cx="15" cy="11" r="1.6"/><circle cx="6" cy="16" r="1.6"/>
+                <circle cx="12" cy="16" r="1.6"/><circle cx="18" cy="16" r="1.6"/>
+              </svg>
+              <span class="unit-led"></span>
+            </div>
+            <span class="unit-tag">STAGE 02</span>
+            <span class="unit-name">Activated Carbon</span>
+          </div>
+
+          <div class="pipe" id="pipeC"><div class="pipe-fluid" style="--fc1:#5b7f8f;--fc2:#334f5c;"></div></div>
+
+          <div class="unit-box" data-stage="ro" tabindex="0">
+            <div class="unit-shell">
+              <svg class="unit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5.2"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none"/>
+              </svg>
+              <span class="unit-led"></span>
+            </div>
+            <span class="unit-tag">STAGE 03</span>
+            <span class="unit-name">RO / UF Membrane</span>
+          </div>
+
+          <div class="pipe" id="pipeD"><div class="pipe-fluid" style="--fc1:#3fc7e0;--fc2:#1b7a8c;"></div></div>
+
+          <div class="tank" data-stage="tank" tabindex="0">
+            <div class="tank-body"><div class="tank-fill" id="fillClean"></div><span class="tank-level" id="levelClean">—</span></div>
+            <div class="tank-label">Clean Water<br>Storage Tank</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="stage-info" id="stageInfo">
+        <p class="stage-info-placeholder">Select a stage above to see how it works.</p>
+      </div>
+
+      <div class="compare-strip" id="compareStrip"></div>
+    </section>
+
+    <!-- RIGHT RAIL: sensors + alerts -->
+    <div class="rail rail-right">
+      <section class="panel">
+        <h2 class="panel-title">Live sensor readings</h2>
+        <div class="sensor-grid" id="sensorGrid"></div>
+      </section>
+
+      <section class="panel alerts-panel">
+        <h2 class="panel-title">Panchayat / PHED alert log</h2>
+        <div class="alert-list" id="alertList">
+          <p class="alert-empty" id="alertEmpty">No alerts yet.</p>
+        </div>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
